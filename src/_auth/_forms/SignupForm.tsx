@@ -33,9 +33,9 @@ const SignupForm = () => {
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof SignupValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+       // const newUser = await createUserAccount(values);
         console.log(values)
+        //https://www.youtube.com/watch?v=_W3R2VwRyF4&t=1452s
     }
 
     return (
