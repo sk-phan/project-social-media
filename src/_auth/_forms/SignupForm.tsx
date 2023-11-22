@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
+import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+
 import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/_root/pages"
 import Loader from "@/shared/Loader"
@@ -20,6 +21,8 @@ import { Link } from "react-router-dom"
 import { createUserAccount } from "@/appwrite/api"
 
 const SignupForm = () => {
+    const { toast } = useToast();
+
     const isLoading = false;
 
     const form = useForm<z.infer<typeof SignupValidation>>({
@@ -32,10 +35,19 @@ const SignupForm = () => {
         },
     })
 
+    const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccountMutation();
+
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof SignupValidation>) {
       const newUser = await createUserAccount(values);
-      console.log(newUser)
+
+      if (!newUser) {
+        return toast({
+          title: "Sign up failed. Please try again" });
+      }
+
+     //const session = await signInAccount();
+
         //https://www.youtube.com/watch?v=_W3R2VwRyF4&t=1452s
     }
 
